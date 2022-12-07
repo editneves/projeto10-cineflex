@@ -3,22 +3,30 @@ import Rota from "./Components/Rota"
 import Sessoes from "./Components/Sessoes"
 import Assentos from "./Components/Assentos"
 import Sucesso from "./Components/Sucesso"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function App() {
-  return (
-    <Container>
-      <Cineflex>
-        <h1>CINEFLEX </h1>
-      </Cineflex>
-      <Select>
-        <h1>Selecione o filme</h1>
-      </Select>
-      <Rota />
-      <Sessoes />
-      <Assentos />
-      <Sucesso />
 
-    </Container>
+  //const [select, setSelect] = useState("Selecione o filme")
+
+  return (
+    <BrowserRouter>
+      <Container>
+        <Cineflex>
+          <h1>CINEFLEX </h1>
+        </Cineflex>
+        <Select>
+          <h1>Selecione o filme</h1>
+        </Select>
+        <Routes>
+          <Route path="/" element={<Rota />} />
+          <Route path="/features" element={<Sessoes />} />
+          <Route path="/services" element={<Assentos />} />
+          <Route path="/Portfolio" element={<PortfolioSection />} />
+          <Route path="/testimonials" element={<Sucesso />} />
+        </Routes>
+      </Container>
+    </BrowserRouter>
   );
 }
 

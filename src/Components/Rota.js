@@ -14,8 +14,9 @@ export default function Rota() {
     if (images === null){
         return <div>Carregando...</div>
       }
+    //   colocar tag link em cada imagem
     return (
-        <>
+        <>   
             <Images>
                 {images.map(image => (
                     <Image key={image.id}>
