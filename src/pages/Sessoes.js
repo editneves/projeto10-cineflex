@@ -17,11 +17,10 @@ export default function Sessoes() {
     
     // requisição deu errado
   }, [])
-  if (sessao === undefined) {
-    return <div>Carregando...</div>
-  }
-
-
+  
+    if (sessao === undefined) {
+      return <div>Carregando...</div>
+    }
 
   console.log(sessao)
   return (
@@ -40,10 +39,9 @@ export default function Sessoes() {
             <Horarios>
               {days.showtimes.map(function (hora) {
                 return (
-
                   <Hour key={hora.id}>
                     <Link style={{ textDecoration: 'none', color: "white" }} to={`/assentos/${hora.id}`}>
-                      {hora.name}
+                    {hora.name} 
                     </Link>
                   </Hour>
                 )

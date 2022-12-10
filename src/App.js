@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function App() {
 
-  //const [select, setSelect] = useState("Selecione o filme")
 
   return (
     <BrowserRouter>
@@ -15,13 +14,14 @@ export default function App() {
         <Cineflex>
           <h1>CINEFLEX </h1>
         </Cineflex>
-
+        {/* <Route path="/assentos/:idSessao" element={<Assentos />} /> */}
         <Routes>
           <Route path="/" element={<Rota/>} /> 
           <Route path="/sessoes/:filmeId" element={<Sessoes />} />
           <Route path="/assentos/:idSessao" element={<Assentos />} />
           <Route path="/sucesso" element={<Sucesso />} />
         </Routes>  
+
       </Container>
     </BrowserRouter>
   );
