@@ -7,19 +7,22 @@ import { useParams } from "react-router-dom"
 export default function Sessoes() {
   const { filmeId } = useParams()
   const [sessao, setSessao] = useState(undefined)
-  
+
   useEffect(() => {
     const URL = (`https://mock-api.driven.com.br/api/v8/cineflex/movies/${filmeId}/showtimes`)
 
     const promise = axios.get(URL)
-    promise.then(res => setSessao(res.data.days))              // requisição deu certo
+    promise.then(res => setSessao(res.data))              // requisição deu certo
     promise.catch(err => console.log(err.response.data))
-
+    
     // requisição deu errado
   }, [])
   if (sessao === undefined) {
     return <div>Carregando...</div>
   }
+
+
+
   console.log(sessao)
   return (
     <>
@@ -27,7 +30,7 @@ export default function Sessoes() {
         <h1>Selecione o horário</h1>
       </Select>
 
-      {sessao.map(function (days) {
+      {sessao.days.map(function (days) {
         return (
           <Days
 
@@ -37,10 +40,10 @@ export default function Sessoes() {
             <Horarios>
               {days.showtimes.map(function (hora) {
                 return (
-                  
+
                   <Hour key={hora.id}>
-                    <Link style={{ textDecoration: 'none',color:"white" }} to={`/assentos/${hora.id}`}>
-                    {hora.name}
+                    <Link style={{ textDecoration: 'none', color: "white" }} to={`/assentos/${hora.id}`}>
+                      {hora.name}
                     </Link>
                   </Hour>
                 )
@@ -48,12 +51,22 @@ export default function Sessoes() {
             </Horarios>
 
           </Days>
+
         )
       })}
+
+      <FilmeEscolhido>
+        <FilmeEs>
+        <img src={sessao.posterURL} alt={sessao.title} />
+        </FilmeEs>
+        <h1>{sessao.title}</h1>
+      </FilmeEscolhido>
     </>
+
   )
 }
 
+  
 const Days = styled.div`
 width: 241px;
 background: #FFFFFF;
@@ -118,5 +131,53 @@ h1{
   line-height: 28px;
   letter-spacing: 0.04em;
   color: #293845;
+}
+`
+
+const FilmeEscolhido = styled.div`
+width: 375px;
+height: 117px;
+margin-top:4px;
+margin-left: 0px;
+margin-bottom: 0px;
+background: #DFE6ED;
+display: flex;
+flex-direction: row;
+flex-wrap: nowrap;
+justify-content: flex-start;
+align-items: center;
+h1{
+  width: 200px;
+  margin-left: 24px;
+  bottom: 39px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 26px;
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #293845;
+}
+
+`
+const FilmeEs = styled.div`
+width: 64px;
+height: 89px;
+margin-left: 10px;
+bottom: 14px;
+background: #FFFFFF;
+box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+border-radius: 2px;
+display: flex;
+align-items: center;
+justify-content: space-around;
+img{
+  width: 48px;
+  height: 72px;
+  left: 18px;
+  bottom: 23px;
 }
 `

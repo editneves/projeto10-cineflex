@@ -19,7 +19,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Rota/>} /> 
           <Route path="/sessoes/:filmeId" element={<Sessoes />} />
-          <Route path="/assentos/:horaId" element={<Assentos />} />
+          <Route path="/assentos/:idSessao" element={<Assentos />} />
           <Route path="/sucesso" element={<Sucesso />} />
         </Routes>  
       </Container>
