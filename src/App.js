@@ -1,8 +1,8 @@
 import styled from "styled-components";
 import Rota from "./Components/Rota"
-import Sessoes from "./Components/Sessoes"
-import Assentos from "./Components/Assentos"
-import Sucesso from "./Components/Sucesso"
+import Sessoes from "./pages/Sessoes"
+import Assentos from "./pages/Assentos"
+import Sucesso from "./pages/Sucesso"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 export default function App() {
@@ -15,16 +15,13 @@ export default function App() {
         <Cineflex>
           <h1>CINEFLEX </h1>
         </Cineflex>
-        <Select>
-          <h1>Selecione o filme</h1>
-        </Select>
+
         <Routes>
-          <Route path="/" element={<Rota />} />
-          <Route path="/features" element={<Sessoes />} />
-          <Route path="/services" element={<Assentos />} />
-          <Route path="/Portfolio" element={<PortfolioSection />} />
-          <Route path="/testimonials" element={<Sucesso />} />
-        </Routes>
+          <Route path="/" element={<Rota/>} /> 
+          <Route path="/sessoes/:filmeId" element={<Sessoes />} />
+          <Route path="/assentos/:horaId" element={<Assentos />} />
+          <Route path="/sucesso" element={<Sucesso />} />
+        </Routes>  
       </Container>
     </BrowserRouter>
   );
@@ -59,23 +56,3 @@ h1{
 }
 `
 
-const Select = styled.div`
-width: 375px;
-height: 67px;
-left: 0px;
-top: 0px;
-background: #FFFFFF;
-display: flex;
-align-items: center;
-text-align: center;
-justify-content: space-around;
-h1{
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 400;
-  font-size: 24px;
-  line-height: 28px;
-  letter-spacing: 0.04em;
-  color: #293845;
-}
-`

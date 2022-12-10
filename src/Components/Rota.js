@@ -1,34 +1,42 @@
 import styled from "styled-components";
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { Link } from "react-router-dom";
 
 export default function Rota() {
-    const [images, setImages] = useState(null)
+    const [filmes, setFilmes] = useState(undefined)
 
     useEffect(() => {
         const URL = "https://mock-api.driven.com.br/api/v8/cineflex/movies"
         const promise = axios.get(URL)
-        promise.then(res => setImages(res.data))              // requisição deu certo
+        promise.then(res => setFilmes(res.data))              // requisição deu certo
         promise.catch(err => console.log(err.response.data))  // requisição deu errado
     }, [])
-    if (images === null){
+    if (filmes === undefined) {
         return <div>Carregando...</div>
-      }
+    }
     //   colocar tag link em cada imagem
+    // <Link to="/contato">Contato</Link>
     return (
-        <>   
-            <Images>
-                {images.map(image => (
-                    <Image key={image.id}>
-                        <img src={image.posterURL} alt={image.title} />
-                    </Image>
+        <>
+            <Select>
+                <h1>Selecione o filme</h1>
+            </Select>
+
+            <Filmes>
+                {filmes.map(filme => (
+                    <Filme key={filme.id}>
+                        <Link to={`/sessoes/${filme.id}`}>
+                        <img src={filme.posterURL} alt={filme.title} />
+                        </Link>
+                    </Filme>
                 ))}
-            </Images>
+            </Filmes>
         </>
     );
 }
 
-const Images = styled.div`
+const Filmes = styled.div`
 width: 319px;
 height: 708px;
 background: #FFFFFF;
@@ -36,7 +44,7 @@ display: flex;
 flex-wrap: wrap;
 justify-content: space-between;
 `
-const Image = styled.div`
+const Filme = styled.div`
 width: 145px;
 height: 209px;
 background: #FFFFFF;
@@ -49,4 +57,24 @@ margin-bottom: 11px;
 img{
     width: 129px;
     height: 193px;}
+`
+const Select = styled.div`
+width: 375px;
+height: 67px;
+left: 0px;
+top: 0px;
+background: #FFFFFF;
+display: flex;
+align-items: center;
+text-align: center;
+justify-content: space-around;
+h1{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 28px;
+  letter-spacing: 0.04em;
+  color: #293845;
+}
 `
