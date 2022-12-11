@@ -18,40 +18,50 @@ export default function Assentos() {
   if (assento === undefined) {
     return <div>Carregando...</div>
   }
-  console.log(assento)
+
+  const assents = assento.seats.map(function (numero) {
+    if (numero.isAvailable) {
+      return (
+        <Numeros
+          key={numero.id}
+        >
+          {numero.name}
+        </Numeros>
+      )
+    } else {
+      return (
+        <NumerosIndisponivel
+          key={numero.id}
+        >
+          {numero.name}
+        </NumerosIndisponivel>
+      )
+    }
+  })
+
   return (
     <>
       <Select>
         <h1>Selecione o(s) assento(s)</h1>
       </Select>
       <Assent>
-        {assento.seats.map(function (numero) {
-          return (
-            <Numeros
-              key={numero.id}>
-              {numero.name}
-            </Numeros>
-          )
-        })}
+        {assents}
       </Assent>
+
       <Cores>
         <Cor>
-          <NumerosSelecionado >
-          </NumerosSelecionado>
+          <NumerosSelecionado />
           <h1>Selecionado</h1>
         </Cor>
         <div>
-          <Numeros>
-          </Numeros>
-          <h1>Disponível </h1>
+          <Numeros />
+          <h1>Disponível</h1>
         </div>
         <div>
-          <NumerosIndisponivel >
-          </NumerosIndisponivel>
-          <h1>Indisponível </h1>
+          <NumerosIndisponivel />
+          <h1>Indisponível</h1>
         </div>
       </Cores>
-
 
       <FilmeEscolhido>
         <FilmeEs>
