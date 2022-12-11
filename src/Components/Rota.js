@@ -15,8 +15,7 @@ export default function Rota() {
     if (filmes === undefined) {
         return <div>Carregando...</div>
     }
-    //   colocar tag link em cada imagem
-    // <Link to="/contato">Contato</Link>
+   
     return (
         <>
             <Select>

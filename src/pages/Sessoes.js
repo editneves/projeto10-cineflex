@@ -22,7 +22,6 @@ export default function Sessoes() {
       return <div>Carregando...</div>
     }
 
-  console.log(sessao)
   return (
     <>
       <Select>
