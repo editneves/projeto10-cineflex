@@ -1,12 +1,39 @@
 import styled from "styled-components";
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 export default function Assentos() {
   const { idSessao } = useParams()
   const [assento, setAssento] = useState(undefined)
+  
+  
+  const [ids, setIds] = useState([1, 2, 3])
+
+  //fazer array que quarde os assentos escolhidos
+  
+  const [name, setName] = useState("")
+  const [cpf, setCpf] = useState("")
+  const navigate = useNavigate()
+
+  function chooseSeats(e) {
+    e.preventDefault()
+    const dadosCliente = { ids, name, cpf }
+    const url_post = "https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many"
+    const promise = axios.post(url_post, dadosCliente)
+    promise.then(res => {
+      console.log(res.data)
+      navigate("/sucesso")
+    })
+    promise.catch(err => console.log(err.response.data))
+
+    console.log(dadosCliente)
+    setName("")
+    setCpf("")
+    setIds("")
+  }
 
   useEffect(() => {
     const URL = (`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`)
@@ -62,6 +89,35 @@ export default function Assentos() {
           <h1>Indisponível</h1>
         </div>
       </Cores>
+
+      <form onSubmit={chooseSeats}>
+
+        <InputGroup>
+          <Title htmlFor="name">Nome do comprador:</Title>
+          <input
+            id="name"
+            type="text"
+            value={name}
+            onChange={e => setName(e.target.value)}
+            required
+          />
+        </InputGroup>
+
+        <InputGroup>
+          <Title htmlFor="cpf">CPF do comprador:</Title>
+          <input
+            id="cpf"
+            type="text"
+            value={cpf}
+            onChange={e => setCpf(e.target.value)}
+            required
+          />
+        </InputGroup>
+        <SaveButton>Reservar assento(s)</SaveButton>
+      </form>
+
+
+
 
       <FilmeEscolhido>
         <FilmeEs>
@@ -180,7 +236,37 @@ display: flex;
 flex-direction: column;
 align-items: center;
 }`
-
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+  input {
+    padding: 8px;
+    border: 1px solid #bbb;
+    border-radius: 5px;
+  }
+`
+const Title = styled.label`
+  margin-bottom: 5px;
+  font-size: 22px;
+`
+const SaveButton = styled.button`
+width: 225px;
+height: 42px;
+left: 72px;
+top: 688px;
+background: #E8833A;
+border-radius: 3px;
+border: 0;
+cursor: pointer;
+  &:hover {
+    filter: brightness(0.9);
+  }
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+`
 const FilmeEscolhido = styled.div`
 width: 375px;
 height: 117px;
