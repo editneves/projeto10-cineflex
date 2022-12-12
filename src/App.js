@@ -4,23 +4,34 @@ import Sessoes from "./pages/Sessoes"
 import Assentos from "./pages/Assentos"
 import Sucesso from "./pages/Sucesso"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
+import { useState } from "react"
 
 export default function App() {
-  
-
+  const [client, setClient] = useState({})
+  const [sessao, setSessao] = useState(undefined)
+  const [assento, setAssento] = useState(undefined)
   return (
     <BrowserRouter>
       <Container>
         <Cineflex>
           <h1>CINEFLEX </h1>
         </Cineflex>
-        {/* <Route path="/assentos/:idSessao" element={<Assentos />} /> */}
         <Routes>
           <Route path="/" element={<Rota/>} /> 
-          <Route path="/sessoes/:filmeId" element={<Sessoes />} />
-          <Route path="/assentos/:idSessao" element={<Assentos />} />
-          <Route path="/sucesso" element={<Sucesso />} />
+          <Route path="/sessoes/:filmeId" element={<Sessoes sessao={sessao} setSessao={setSessao} />} />
+          <Route path="/assentos/:idSessao" element={<Assentos client={client} setClient={setClient} assento={assento}
+              setAssento={setAssento}/>} />
+          <Route
+            path="/sucesso"
+            element={<Sucesso
+              client={client}
+              setClient={setClient}
+              sessao={sessao}
+              setSessao={setSessao}
+              assento={assento}
+              setAssento={setAssento}
+            />}
+          />
         </Routes>  
 
       </Container>

@@ -24,7 +24,7 @@ export default function Rota() {
 
             <Filmes>
                 {filmes.map(filme => (
-                    <Filme key={filme.id}>
+                    <Filme   data-test="movie" key={filme.id}>
                         <Link to={`/sessoes/${filme.id}`}>
                         <img src={filme.posterURL} alt={filme.title} />
                         </Link>

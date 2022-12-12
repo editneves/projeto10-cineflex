@@ -3,19 +3,20 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
+const idSelectAssents = []
 
-export default function Assentos() {
-  const [assento, setAssento] = useState(undefined)
+export default function Assentos({client, setClient,assento, setAssento}) {
+  
   const { idSessao } = useParams()
   const [name, setName] = useState("")
   const [cpf, setCpf] = useState("")
-  const navigate = useNavigate()
-  const idSelectAssents = []
 
+  const navigate = useNavigate()
+  //const idSelect = []
   useEffect(() => {
     const URL = (`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`)
     const promise = axios.get(URL)
-    promise.then(res => setAssento(res.data))              // requisição deu certo
+    promise.then(res => setAssento(res.data))            // requisição deu certo
     promise.catch(err => console.log(err.response.data)) // requisição deu errado
   }, [])
 
@@ -23,27 +24,14 @@ export default function Assentos() {
     return <div>Carregando...</div>
   }
 
-  function chooseSeats(e) {
-    e.preventDefault()
-    const dadosCliente = { idSelectAssents, name, cpf }
-    const url_post = "https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many"
-    const promise = axios.post(url_post, dadosCliente)
-    promise.then(res => {
-      console.log(res.data)
-      navigate("/sucesso")
-    })
-    promise.catch(err => console.log(err.response.data))
-    console.log(dadosCliente)
-    setName("")
-    setCpf("")
-  }
+
   const handleClick = (idAssento, select) => {
 
     select.style.backgroundColor = "#1AAE9E"
     select.style.border = "1px solid #0E7D71"
 
     if (!idSelectAssents.includes(idAssento)) {
-      idSelectAssents.push(idAssento);
+      idSelectAssents.push(idAssento)
     } else {
       const index = idSelectAssents.indexOf(idAssento)
       if (index > -1) {
@@ -52,13 +40,14 @@ export default function Assentos() {
       select.style.backgroundColor = "#C3CFD9"
       select.style.border = "1px solid #808F9D"
     }
-    console.log(idSelectAssents)
+
   }
 
   const assents = assento.seats.map(function (seat) {
     if (seat.isAvailable) {  //se true assento disponível
       return (
         <Assents
+          data-test="seat"
           changeBackgroundColor={"#C3CFD9"}
           changeBorder={"#808F9D"}
           onClick={(e) => handleClick(`${seat.name}`, e.target)}
@@ -77,6 +66,25 @@ export default function Assentos() {
       )
     }
   })
+
+  const chooseSeats = () => {
+    const idsSel = idSelectAssents.map(function (str) { return parseInt(str); })
+
+    const client = { ids: idsSel, name: name, cpf: cpf }
+   
+    setClient(client)
+
+    const url_post = "https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many"
+    const promise = axios.post(url_post, client)
+    promise.then(res => {
+      console.log(res.data)
+      navigate("/sucesso?")
+    })
+    promise.catch(err => console.log(err.response.data))
+
+    setName("")
+    setCpf("")
+  }
 
   return (
     <>
@@ -103,11 +111,12 @@ export default function Assentos() {
         </div>
       </Cores>
 
-      <form onSubmit={chooseSeats}>
+      <div>
 
         <InputGroup>
           <Title htmlFor="name">Nome do comprador:</Title>
           <input
+            data-test="client-name" 
             id="name"
             type="text"
             placeholder="Digite seu nome..."
@@ -120,6 +129,7 @@ export default function Assentos() {
         <InputGroup>
           <Title htmlFor="cpf">CPF do comprador:</Title>
           <input
+            data-test="client-cpf"
             id="cpf"
             type="text"
             placeholder="Digite seu CPF..."
@@ -128,13 +138,13 @@ export default function Assentos() {
             required
           />
         </InputGroup>
-        <CenterButton> 
-        <SaveButton>Reservar assento(s)</SaveButton>
+        <CenterButton>
+          <SaveButton onClick={chooseSeats}>Reservar assento(s)</SaveButton>
         </CenterButton>
-      </form>
+      </div>
 
       <FilmeEscolhido>
-        <FilmeEs>
+        <FilmeEs data-test="footer">
           <img src={assento.movie.posterURL} alt={assento.movie.title} />
         </FilmeEs>
         <h1>{assento.movie.title}</h1>

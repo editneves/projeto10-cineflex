@@ -4,9 +4,8 @@ import { useEffect, useState } from "react"
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom"
 
-export default function Sessoes() {
+export default function Sessoes({sessao, setSessao}) {
   const { filmeId } = useParams()
-  const [sessao, setSessao] = useState(undefined)
 
   useEffect(() => {
     const URL = (`https://mock-api.driven.com.br/api/v8/cineflex/movies/${filmeId}/showtimes`)
@@ -30,15 +29,15 @@ export default function Sessoes() {
 
       {sessao.days.map(function (days) {
         return (
-          <Days
-
+          <Days 
+            data-test="movie-day"
             key={days.id}>
             <h1>{days.weekday} - {days.date} </h1>
 
             <Horarios>
               {days.showtimes.map(function (hora) {
                 return (
-                  <Hour key={hora.id}>
+                  <Hour key={hora.id} data-test="showtime">
                     <Link style={{ textDecoration: 'none', color: "white" }} to={`/assentos/${hora.id}`}>
                     {hora.name} 
                     </Link>
@@ -53,7 +52,7 @@ export default function Sessoes() {
       })}
 
       <FilmeEscolhido>
-        <FilmeEs>
+        <FilmeEs data-test="footer">
         <img src={sessao.posterURL} alt={sessao.title} />
         </FilmeEs>
         <h1>{sessao.title}</h1>
