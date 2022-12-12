@@ -43,6 +43,27 @@ const GlobalStyle = createGlobalStyle`
         border-collapse: collapse;
         border-spacing: 0;
     }
+    .seat {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+      
+      .selected {
+        background-color: lightgreen;
+      }
+      .available {
+        background-color: lightgrey;
+      }
+      
+      .unavailable {
+        background-color: lightcoral;
+      }
+      
 `
 
 export default GlobalStyle

@@ -1,39 +1,16 @@
 import styled from "styled-components";
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { Link, Navigate } from "react-router-dom";
 import { useParams } from "react-router-dom"
 import { useNavigate } from "react-router-dom"
 
 export default function Assentos() {
-  const { idSessao } = useParams()
   const [assento, setAssento] = useState(undefined)
-  
-  
-  const [ids, setIds] = useState([1, 2, 3])
-
-  //fazer array que quarde os assentos escolhidos
-  
+  const { idSessao } = useParams()
   const [name, setName] = useState("")
   const [cpf, setCpf] = useState("")
   const navigate = useNavigate()
-
-  function chooseSeats(e) {
-    e.preventDefault()
-    const dadosCliente = { ids, name, cpf }
-    const url_post = "https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many"
-    const promise = axios.post(url_post, dadosCliente)
-    promise.then(res => {
-      console.log(res.data)
-      navigate("/sucesso")
-    })
-    promise.catch(err => console.log(err.response.data))
-
-    console.log(dadosCliente)
-    setName("")
-    setCpf("")
-    setIds("")
-  }
+  const idSelectAssents = []
 
   useEffect(() => {
     const URL = (`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`)
@@ -46,22 +23,57 @@ export default function Assentos() {
     return <div>Carregando...</div>
   }
 
-  const assents = assento.seats.map(function (numero) {
-    if (numero.isAvailable) {
-      return (
-        <Numeros
-          key={numero.id}
-        >
-          {numero.name}
-        </Numeros>
-      )
+  function chooseSeats(e) {
+    e.preventDefault()
+    const dadosCliente = { idSelectAssents, name, cpf }
+    const url_post = "https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many"
+    const promise = axios.post(url_post, dadosCliente)
+    promise.then(res => {
+      console.log(res.data)
+      navigate("/sucesso")
+    })
+    promise.catch(err => console.log(err.response.data))
+    console.log(dadosCliente)
+    setName("")
+    setCpf("")
+  }
+  const handleClick = (idAssento, select) => {
+
+    select.style.backgroundColor = "#1AAE9E"
+    select.style.border = "1px solid #0E7D71"
+
+    if (!idSelectAssents.includes(idAssento)) {
+      idSelectAssents.push(idAssento);
     } else {
+      const index = idSelectAssents.indexOf(idAssento)
+      if (index > -1) {
+        idSelectAssents.splice(index, 1)
+      }
+      select.style.backgroundColor = "#C3CFD9"
+      select.style.border = "1px solid #808F9D"
+    }
+    console.log(idSelectAssents)
+  }
+
+  const assents = assento.seats.map(function (seat) {
+    if (seat.isAvailable) {  //se true assento disponível
       return (
-        <NumerosIndisponivel
-          key={numero.id}
+        <Assents
+          changeBackgroundColor={"#C3CFD9"}
+          changeBorder={"#808F9D"}
+          onClick={(e) => handleClick(`${seat.name}`, e.target)}
+          key={seat.id}
         >
-          {numero.name}
-        </NumerosIndisponivel>
+          {seat.name}
+        </Assents>
+      )
+    } else {  // se falso assento indisponível
+      return (
+        <AssentsIndisponivel
+          key={seat.id}
+        >
+          {seat.name}
+        </AssentsIndisponivel>
       )
     }
   })
@@ -71,21 +83,22 @@ export default function Assentos() {
       <Select>
         <h1>Selecione o(s) assento(s)</h1>
       </Select>
-      <Assent>
+
+      < Assent >
         {assents}
-      </Assent>
+      </Assent >
 
       <Cores>
         <Cor>
-          <NumerosSelecionado />
-          <h1>Selecionado</h1>
+          <AssentSelect />
+          <h1 >Selecionado</h1>
         </Cor>
         <div>
-          <Numeros />
+          <Assents />
           <h1>Disponível</h1>
         </div>
         <div>
-          <NumerosIndisponivel />
+          <AssentsIndisponivel />
           <h1>Indisponível</h1>
         </div>
       </Cores>
@@ -97,6 +110,7 @@ export default function Assentos() {
           <input
             id="name"
             type="text"
+            placeholder="Digite seu nome..."
             value={name}
             onChange={e => setName(e.target.value)}
             required
@@ -108,16 +122,16 @@ export default function Assentos() {
           <input
             id="cpf"
             type="text"
+            placeholder="Digite seu CPF..."
             value={cpf}
             onChange={e => setCpf(e.target.value)}
             required
           />
         </InputGroup>
+        <CenterButton> 
         <SaveButton>Reservar assento(s)</SaveButton>
+        </CenterButton>
       </form>
-
-
-
 
       <FilmeEscolhido>
         <FilmeEs>
@@ -151,6 +165,7 @@ h1{
   color: #293845;
 }
 `
+
 const Assent = styled.div`
 width: 330px;
 height: 220px;
@@ -162,7 +177,7 @@ align-content: space-around;
 align-items: center;
 }`
 
-const Numeros = styled.div`
+const Assents = styled.div`
 box-sizing: border-box;
 width: 26px;
 height: 26px;
@@ -179,7 +194,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 `
-const NumerosSelecionado = styled.div`
+const AssentSelect = styled.div`
 box-sizing: border-box;
 width: 26px;
 height: 26px;
@@ -196,7 +211,7 @@ display: flex;
 justify-content: center;
 align-items: center;
 `
-const NumerosIndisponivel = styled.div`
+const AssentsIndisponivel = styled.div`
 box-sizing: border-box;
 width: 26px;
 height: 26px;
@@ -239,16 +254,32 @@ align-items: center;
 const InputGroup = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px;
+  margin-bottom: 51px;
   input {
-    padding: 8px;
-    border: 1px solid #bbb;
-    border-radius: 5px;
+    box-sizing: border-box;
+    width: 327px;
+    height: 51px;
+    left: 24px;
+    top: 497px;
+    background: #FFFFFF;
+    border: 1px solid #D5D5D5;
+    border-radius: 3px;
   }
 `
 const Title = styled.label`
-  margin-bottom: 5px;
-  font-size: 22px;
+font-family: 'Roboto';
+font-style: normal;
+font-weight: 400;
+font-size: 18px;
+line-height: 21px;
+display: flex;
+align-items: center;
+color: #293845;
+`
+const CenterButton = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
 `
 const SaveButton = styled.button`
 width: 225px;
@@ -258,6 +289,10 @@ top: 688px;
 background: #E8833A;
 border-radius: 3px;
 border: 0;
+display: flex;
+justify-content: center;
+align-items: center;
+
 cursor: pointer;
   &:hover {
     filter: brightness(0.9);
@@ -270,7 +305,7 @@ cursor: pointer;
 const FilmeEscolhido = styled.div`
 width: 375px;
 height: 117px;
-margin-top:4px;
+margin-top:30px;
 margin-left: 0px;
 margin-bottom: 0px;
 background: #DFE6ED;

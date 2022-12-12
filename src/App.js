@@ -5,8 +5,9 @@ import Assentos from "./pages/Assentos"
 import Sucesso from "./pages/Sucesso"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-export default function App() {
 
+export default function App() {
+  
 
   return (
     <BrowserRouter>
@@ -26,7 +27,7 @@ export default function App() {
     </BrowserRouter>
   );
 }
-
+//assento={assento} setAssento={setAssento}
 const Container = styled.div`
 background: #FFFFFF;
 width: 375px;
