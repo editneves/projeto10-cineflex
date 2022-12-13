@@ -85,7 +85,7 @@ export default function Assentos({client, setClient,assento, setAssento}) {
         <p>Selecione o(s) assento(s)</p>
       </Select>
 
-      < Assent >
+      < Assent data-test="seat">
         {assents}
       </Assent >
 
@@ -131,18 +131,17 @@ export default function Assentos({client, setClient,assento, setAssento}) {
           />
         </InputGroup>
         <CenterButton>
-          <SaveButton onClick={chooseSeats}><h1>Reservar assento(s)</h1></SaveButton>
+          <SaveButton data-test="book-seat-btn" onClick={chooseSeats}><h1>Reservar assento(s)</h1></SaveButton>
         </CenterButton>
       </div>
 
-      <FilmeEscolhido>
-        <FilmeEs data-test="footer">
+      <FilmeEscolhido data-test="footer">
+        <FilmeEs>
           <img src={assento.movie.posterURL} alt={assento.movie.title} />
         </FilmeEs>
-        <h1>{assento.movie.title}</h1>
+        <h1>{assento.movie.title} {assento.day.weekday} - {assento.name} </h1>
       </FilmeEscolhido>
     </>
-
   )
 }
 
