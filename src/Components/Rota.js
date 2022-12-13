@@ -9,24 +9,24 @@ export default function Rota() {
     useEffect(() => {
         const URL = "https://mock-api.driven.com.br/api/v8/cineflex/movies"
         const promise = axios.get(URL)
-        promise.then(res => setFilmes(res.data))              // requisição deu certo
-        promise.catch(err => console.log(err.response.data))  // requisição deu errado
+        promise.then(res => setFilmes(res.data))              
+        promise.catch(err => console.log(err.response.data))  
     }, [])
     if (filmes === undefined) {
         return <div>Carregando...</div>
     }
-   
+
     return (
         <>
             <Select>
-                <h1>Selecione o filme</h1>
+                <p>Selecione o filme</p>
             </Select>
 
             <Filmes>
                 {filmes.map(filme => (
-                    <Filme   data-test="movie" key={filme.id}>
+                    <Filme data-test="movie" key={filme.id}>
                         <Link to={`/sessoes/${filme.id}`}>
-                        <img src={filme.posterURL} alt={filme.title} />
+                            <img src={filme.posterURL} alt={filme.title} />
                         </Link>
                     </Filme>
                 ))}
@@ -67,7 +67,7 @@ display: flex;
 align-items: center;
 text-align: center;
 justify-content: space-around;
-h1{
+p{
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;

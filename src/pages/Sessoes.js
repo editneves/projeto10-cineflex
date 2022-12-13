@@ -1,25 +1,23 @@
 import styled from "styled-components";
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom"
 
-export default function Sessoes({sessao, setSessao}) {
+export default function Sessoes({ sessao, setSessao }) {
   const { filmeId } = useParams()
 
   useEffect(() => {
     const URL = (`https://mock-api.driven.com.br/api/v8/cineflex/movies/${filmeId}/showtimes`)
 
     const promise = axios.get(URL)
-    promise.then(res => setSessao(res.data))              // requisição deu certo
+    promise.then(res => setSessao(res.data))
     promise.catch(err => console.log(err.response.data))
-    
-    // requisição deu errado
   }, [])
-  
-    if (sessao === undefined) {
-      return <div>Carregando...</div>
-    }
+
+  if (sessao === undefined) {
+    return <div>Carregando...</div>
+  }
 
   return (
     <>
@@ -29,7 +27,8 @@ export default function Sessoes({sessao, setSessao}) {
 
       {sessao.days.map(function (days) {
         return (
-          <Days 
+
+          <Days
             data-test="movie-day"
             key={days.id}>
             <h1>{days.weekday} - {days.date} </h1>
@@ -39,7 +38,7 @@ export default function Sessoes({sessao, setSessao}) {
                 return (
                   <Hour key={hora.id} data-test="showtime">
                     <Link style={{ textDecoration: 'none', color: "white" }} to={`/assentos/${hora.id}`}>
-                    {hora.name} 
+                      {hora.name}
                     </Link>
                   </Hour>
                 )
@@ -47,13 +46,12 @@ export default function Sessoes({sessao, setSessao}) {
             </Horarios>
 
           </Days>
-
         )
       })}
 
       <FilmeEscolhido>
         <FilmeEs data-test="footer">
-        <img src={sessao.posterURL} alt={sessao.title} />
+          <img src={sessao.posterURL} alt={sessao.title} />
         </FilmeEs>
         <h1>{sessao.title}</h1>
       </FilmeEscolhido>
@@ -62,7 +60,7 @@ export default function Sessoes({sessao, setSessao}) {
   )
 }
 
-  
+
 const Days = styled.div`
 width: 241px;
 background: #FFFFFF;
@@ -127,9 +125,7 @@ h1{
   line-height: 28px;
   letter-spacing: 0.04em;
   color: #293845;
-}
-`
-
+}`
 const FilmeEscolhido = styled.div`
 width: 375px;
 height: 117px;

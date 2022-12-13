@@ -38,7 +38,7 @@ export default function App() {
     </BrowserRouter>
   );
 }
-//assento={assento} setAssento={setAssento}
+
 const Container = styled.div`
 background: #FFFFFF;
 width: 375px;

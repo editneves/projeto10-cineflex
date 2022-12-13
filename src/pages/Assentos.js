@@ -6,13 +6,11 @@ import { useNavigate } from "react-router-dom"
 const idSelectAssents = []
 
 export default function Assentos({client, setClient,assento, setAssento}) {
-  
   const { idSessao } = useParams()
   const [name, setName] = useState("")
   const [cpf, setCpf] = useState("")
-
   const navigate = useNavigate()
-  //const idSelect = []
+  
   useEffect(() => {
     const URL = (`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${idSessao}/seats`)
     const promise = axios.get(URL)
@@ -23,7 +21,6 @@ export default function Assentos({client, setClient,assento, setAssento}) {
   if (assento === undefined) {
     return <div>Carregando...</div>
   }
-
 
   const handleClick = (idAssento, select) => {
 
@@ -40,7 +37,6 @@ export default function Assentos({client, setClient,assento, setAssento}) {
       select.style.backgroundColor = "#C3CFD9"
       select.style.border = "1px solid #808F9D"
     }
-
   }
 
   const assents = assento.seats.map(function (seat) {
@@ -69,9 +65,7 @@ export default function Assentos({client, setClient,assento, setAssento}) {
 
   const chooseSeats = () => {
     const idsSel = idSelectAssents.map(function (str) { return parseInt(str); })
-
     const client = { ids: idsSel, name: name, cpf: cpf }
-   
     setClient(client)
 
     const url_post = "https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many"
@@ -81,7 +75,6 @@ export default function Assentos({client, setClient,assento, setAssento}) {
       navigate("/sucesso?")
     })
     promise.catch(err => console.log(err.response.data))
-
     setName("")
     setCpf("")
   }
@@ -89,7 +82,7 @@ export default function Assentos({client, setClient,assento, setAssento}) {
   return (
     <>
       <Select>
-        <h1>Selecione o(s) assento(s)</h1>
+        <p>Selecione o(s) assento(s)</p>
       </Select>
 
       < Assent >
@@ -112,7 +105,6 @@ export default function Assentos({client, setClient,assento, setAssento}) {
       </Cores>
 
       <div>
-
         <InputGroup>
           <Title htmlFor="name">Nome do comprador:</Title>
           <input
@@ -139,7 +131,7 @@ export default function Assentos({client, setClient,assento, setAssento}) {
           />
         </InputGroup>
         <CenterButton>
-          <SaveButton onClick={chooseSeats}>Reservar assento(s)</SaveButton>
+          <SaveButton onClick={chooseSeats}><h1>Reservar assento(s)</h1></SaveButton>
         </CenterButton>
       </div>
 
@@ -153,8 +145,7 @@ export default function Assentos({client, setClient,assento, setAssento}) {
 
   )
 }
-//style={{backgroundColor: "#1AAE9E",border: "1px solid #0E7D71"}}
-//style={{backgroundColor: "#FBE192" ,border: "1px solid #F7C52B"}}
+
 const Select = styled.div`
 width: 375px;
 height: 67px;
@@ -165,7 +156,7 @@ display: flex;
 align-items: center;
 text-align: center;
 justify-content: space-around;
-h1{
+p{
   font-family: 'Roboto';
   font-style: normal;
   font-weight: 400;
@@ -173,8 +164,7 @@ h1{
   line-height: 28px;
   letter-spacing: 0.04em;
   color: #293845;
-}
-`
+}`
 
 const Assent = styled.div`
 width: 330px;
@@ -262,20 +252,20 @@ flex-direction: column;
 align-items: center;
 }`
 const InputGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 51px;
-  input {
-    box-sizing: border-box;
-    width: 327px;
-    height: 51px;
-    left: 24px;
-    top: 497px;
-    background: #FFFFFF;
-    border: 1px solid #D5D5D5;
-    border-radius: 3px;
-  }
-`
+display: flex;
+flex-direction: column;
+margin-bottom: 51px;
+input {
+  box-sizing: border-box;
+  width: 327px;
+  height: 51px;
+  left: 24px;
+  top: 497px;
+  background: #FFFFFF;
+  border: 1px solid #D5D5D5;
+  border-radius: 3px;
+}`
+
 const Title = styled.label`
 font-family: 'Roboto';
 font-style: normal;
@@ -302,7 +292,18 @@ border: 0;
 display: flex;
 justify-content: center;
 align-items: center;
-
+h1{
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0.04em;
+  color: #FFFFFF;
+}
 cursor: pointer;
   &:hover {
     filter: brightness(0.9);
